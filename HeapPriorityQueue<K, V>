@@ -35,9 +35,24 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K,V> {
 	
 	/** constructur with user defined Comparator<K> */
 	public HeapPriorityQueue(Comparator<K> comp) { super(comp); }
-  
-  // accessors
 	
+	/** creates a priority queue with the given key value pairs */
+	public  HeapPriorityQueue(K[] keys, V[] values) {
+		super();															// call the constructor of AbstractPriorityQueue with the default comparator
+		for (int j = 0; j < Math.min(keys.length, values.length); j++)      // loop through the key-value pairs
+			heap.add(new PQEntry<>(keys[j], values[j]));                    // create a new entry add it to the heap
+		heapify();                                                          // call heapify to order the heap in the proper fashion 
+		
+	}
+	
+	/** performs a bottom-up construction of the heap in linear time */
+	protected void heapify() {
+		int startIndex = parent(size()-1);		// start at the parent of the last entry 
+		for (int j = startIndex; j>=0;j--)
+			downheap(j);
+		
+	}
+
 	/** returns the index of the parent of entry at heap[j] */
 	protected int parent(int j) {return (j-1)/2;}  // uses java truncating property of int division
 	
@@ -62,11 +77,11 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K,V> {
 	
 	/** moves the entry at heap.get(j) higher (if necessary) to restore heap order property */
 	protected void upheap(int j) {
-		while (j > 0) {  										// if j == 0 then j is the root and it has no parent
+		while (j > 0) { // if j == 0 then j is the root and it has no parent
 			int p = parent(j);
 			if (compare(heap.get(j), heap.get(p)) >= 0) break;  // it should break if the key at the child is bigger or equal to that of the parent
-			swap(j,p);											// if this line is reached the key of the child is smaller and swap the two entries
-			j = p;												// continue from the parent's location
+			swap(j,p); // if this line is reached the key of the child is smaller and swap the two entries
+			j = p;     // continue from the parent's location
 		}
 	}
 	
