@@ -1,0 +1,21 @@
+package heaps_priority_queues;
+
+/**
+ * Interface that allows us to pair a key and value as a single object
+ * Composition pattern
+ * 
+ * @author Lau Sandt
+ *
+ * @param <K> key
+ * @param <V> value
+ */
+
+public interface Entry<K, V> {
+	
+	/**  returns the key stored at this entry */
+	K getKey(); 	
+	
+	/** returns the value stored at this entry */
+	V getValue();   
+
+}
