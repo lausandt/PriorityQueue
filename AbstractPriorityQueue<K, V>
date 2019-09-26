@@ -1,0 +1,77 @@
+/*
+ * 
+ */
+package heaps_priority_queues;
+
+import java.util.Comparator;
+
+/**
+ * An abstract base class to assist in implementations of the PriorityQueue interface
+ * @author Lau Sandt
+ * https://github.com/lausandt/Java
+ * 
+ * In order to keep the key value generic we must adhere to the total order relationship
+ * Comparability property: k1 <= k2 or k2 <=k1
+ * Antisymmetric property: if k1 <= k2 and k2 <= k1 then it must be so that k1 = k2
+ * Transitive property: if k1 <= k2 and k2 <= k3 then k1 <= k3
+ * 
+ * Comparability property states that comparison is defined for every pair of keys
+ * Reflexive property k <= k
+ */
+public abstract class AbstractPriorityQueue<K, V> implements PriorityQueue<K,V>{
+	
+	//-------- nested PQEntry class --------
+	protected static class PQEntry<K,V> implements Entry<K,V> {
+		private K key;
+		private V value;
+		
+		// constructor
+		public PQEntry(K key, V value) {
+			this.key   = key;
+			this.value = value;
+		}
+
+		// getters
+		@Override
+		public K getKey() { return key;	}
+
+		@Override
+		public V getValue() { return value;	}
+		
+		// unexposed utilities (not part of the entry interface 
+		protected void setKey(K key) { this.key = key; }
+		protected void setValue(V value) { this.value = value; }
+		
+	}//-------- end nested PQEntry class ------
+	
+	// instance variables for the AbstractPriorityQueue
+	
+	/** The comparator defining the ordering of the keys in the priority queue */
+	private Comparator<K> comp;
+	
+	/** Creates an empty priority queue using the given (user defined) comparator to order keys */
+	protected AbstractPriorityQueue(Comparator<K> c) { comp = c; }
+	
+	/** creates an empty priority queue based upon the natural ordering of its keys */
+	protected AbstractPriorityQueue() { this(new DefaultComparator<K>());}
+	
+	/** method for comparing two entries according to key */
+	protected int compare(Entry<K,V> a, Entry<K,V> b) {
+		return comp.compare(a.getKey(), b.getKey());
+	}
+	
+	/** determines if a key is valid */
+	protected boolean checkKey(K key) throws IllegalArgumentException {
+		try {
+			return (comp.compare(key, key) == 0);
+		} catch (ClassCastException e) {  // if the arguments' types prevent them from being compared by this comparator.
+			throw new IllegalArgumentException("Incompatible key");
+		}
+	}
+	
+	/** tests if the priority queue is empty */
+	public boolean isEmpty() {return size() == 0; }
+	
+	
+
+}
