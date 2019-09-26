@@ -1,0 +1,117 @@
+/**
+ * 
+ */
+package heaps_priority_queues;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+
+/**
+ * Priority queue implemented with a heap
+ * 
+ * A heap is a binary tree with two additional properties
+ * 
+ * Heap order property (relational property):
+ * 
+ * In a heap T, for every position p other than the root, the key stored at p is greater then or equal to the key at p's parent 
+ * 
+ * Complete binary tree property (structural property):
+ * 
+ * A heap T with height h is a complete binary tree if levels 0,1,2,...,h-1 have the maximal numbers of nodes possible 
+ * and the remaining nodes at level h reside in the leftmost possible positions at this level 
+ * 
+ * this algorithm runs O(log(n))
+ * 
+ * @author Lau Sandt
+ * https://github.com/lausandt/Java
+ */
+public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K,V> {
+	
+	/** primary collection of priority queue entriers */
+	protected ArrayList<Entry<K,V>> heap = new ArrayList<>();
+
+	// constructors 
+	public HeapPriorityQueue() { super(); }
+	
+	/** constructur with user defined Comparator<K> */
+	public HeapPriorityQueue(Comparator<K> comp) { super(comp); }
+  
+  // accessors
+	
+	/** returns the index of the parent of entry at heap[j] */
+	protected int parent(int j) {return (j-1)/2;}  // uses java truncating property of int division
+	
+	/** returns the index of the left child of the entry at heap.get(j) */
+	protected int left(int j) { return 2*j+1; }
+	
+	/** returns the index of the right child of the entry at heap.get(j) */ 
+	protected int right(int j) { return 2*j+2; }
+	
+	/** tests if entry at heap.get(j) has a left child */
+	protected boolean hasLeft(int j) { return j < heap.size(); }
+	
+	/** tests if entry at heap.get(j)has a right child */
+	protected boolean hasRight(int j) { return j < heap.size(); }
+	
+	/** Exchanges to entries at indices i & j in the heap */
+	protected void swap(int i, int j) {
+		Entry<K,V> temp = heap.get(i);
+		heap.set(i, heap.get(j));
+		heap.set(j, temp);
+	}
+	
+	/** moves the entry at heap.get(j) higher (if necessary) to restore heap order property */
+	protected void upheap(int j) {
+		while (j > 0) {  										// if j == 0 then j is the root and it has no parent
+			int p = parent(j);
+			if (compare(heap.get(j), heap.get(p)) >= 0) break;  // it should break if the key at the child is bigger or equal to that of the parent
+			swap(j,p);											// if this line is reached the key of the child is smaller and swap the two entries
+			j = p;												// continue from the parent's location
+		}
+	}
+	
+	/** moves the entry at heap.get(j) lower (if necessary) to restore heap order property */
+	protected void downheap(int j) {
+		while (hasLeft(j)) {
+			int leftIndex = left(j);
+			int smallChildIndex = leftIndex;
+			if (hasRight(j)) {
+				int rightIndex = right(j);
+				if (compare(heap.get(rightIndex), heap.get(leftIndex)) < 0)
+					smallChildIndex = rightIndex;
+			}
+			if (compare(heap.get(j), heap.get(smallChildIndex)) < 0) break; // if the parent has a smaller key then break
+			swap(j, smallChildIndex);
+			j = smallChildIndex;
+		}
+	}
+	
+	
+	/** returns the size of the heap */
+	public int size() { return heap.size(); }
+	
+	@Override
+	public Entry<K,V> insert(K key, V value) throws IllegalArgumentException {
+		Entry<K,V> latest = new PQEntry<>(key, value);	// create new entry
+		heap.add(latest);								// add the entry at the last position of the heap
+		upheap(heap.size()-1);							// run upheap to restore order
+		return latest;
+	}
+	
+	/** returns the entry with highest priority */
+	public Entry<K,V> min() { 
+		if (heap.isEmpty()) return null;
+	    return heap.get(0) ;
+	    }
+	
+	/** removes and returns the entry with minimal key (if any) */
+	public Entry<K,V> removeMin() {
+		if (heap.isEmpty()) return null;
+		Entry<K,V> min = heap.get(0); 				// get the entry with the minimal key
+		swap(0, heap.size()-1);  					// swap the first and the last entry
+		heap.remove(heap.size()-1);       			// remove the entry with the maximal key from the heap
+        downheap(0);                                // run downheap to restore order
+		return min;
+	}
+
+}
