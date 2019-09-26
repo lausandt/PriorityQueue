@@ -2,12 +2,12 @@ Priority Queue ADT
 
 an element and its priority are modeled as a key value composite known as an entry
 
-insert(k, v):		Creates an entry with key k and value v in the priority queue (pq)
+insert(k, v): Creates an entry with key k and value v in the priority queue (pq)
 
-min():				Returns but does not remove a priority queue entry (k,v) having a minimal key. returns null if the pq is empty
+min(): Returns but does not remove a priority queue entry (k,v) having a minimal key. returns null if the pq is empty
 
-removeMin():		Removes and returns an entry (k,v) having minimal key from the pq, returns null if the pq is empty
+removeMin(): Removes and returns an entry (k,v) having minimal key from the pq, returns null if the pq is empty
 
-size():				Returns the number of elements in the priority queue
+size():	Returns the number of elements in the priority queue
 
-isEmpty():			Returns a boolean value indicating if the pq is empty
+isEmpty():Returns a boolean value indicating if the pq is empty
