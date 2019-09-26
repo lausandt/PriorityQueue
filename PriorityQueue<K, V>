@@ -1,0 +1,25 @@
+package heaps_priority_queues;
+
+/**
+ * Interface for a priority queue
+ * @author Lau Sandt
+ * https://github.com/lausandt/PriorityQueue
+ */
+public interface PriorityQueue<K, V> {
+	
+	/** Returns the number of elements in the priority queue */
+	int size();
+	
+	/** Returns a boolean value indicating if the priority queue is empty */
+	boolean isEmpty();
+	
+	/** Creates and returns an entry with key k and value v in the priority queue */
+	Entry<K,V> insert(K key, V value) throws IllegalArgumentException;
+	
+	/** Returns but does not remove a priority queue entry (k,v) having a minimal key. returns null if the pq is empty */
+	Entry<K,V> min();
+	
+	/** Removes and returns an entry (k,v) having minimal key from the priority queue, returns null if the pq is empty */
+	Entry<K,V> removeMin();
+
+}
