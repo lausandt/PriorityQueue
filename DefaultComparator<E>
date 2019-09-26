@@ -1,0 +1,12 @@
+package heaps_priority_queues;
+
+import java.util.Comparator;
+
+public class DefaultComparator<E> implements Comparator<E> {
+	@SuppressWarnings("unchecked")
+	public int compare(E a, E b) throws ClassCastException {
+		// the cast is necessary for to call compareTo on a it needs to be of Comparable<E> class
+		return ((Comparable<E>) a).compareTo(b);  
+	}
+
+}
