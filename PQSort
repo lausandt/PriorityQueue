@@ -1,0 +1,27 @@
+package heaps_priority_queues;
+
+import list_abstractions.PositionalList;
+/**
+ * basis for priority queue based sorting algorithms
+ * selection sort named after the repeated selection of the minValue of the priority queue runs O(n^2)
+ * insertion sort named after the repeated insertion of the element at the appropriate position in the sorted list, runs in O(n^2)
+ * heap sort named after the heap priorityqueue runs in O(n log n) 
+ * @author Lau Sandt
+ * https://github.com/lausandt/PriorityQueue
+ */
+
+public class PQSort {
+	
+	public <E> void pqSort(PositionalList<E> S, PriorityQueue<E, ?> P) {
+		int n = S.size();
+		for (int j=0; j< n; j++) {
+			E element = S.remove(S.first());
+			P.insert(element, null);
+		}
+		for (int j=0; j< n; j++) {
+			E element = P.removeMin().getKey();
+			S.addLast(element);
+		}	
+	}
+
+}
