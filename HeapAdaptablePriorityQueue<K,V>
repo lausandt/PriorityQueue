@@ -1,0 +1,104 @@
+/**
+ * 
+ */
+package heaps_priority_queues;
+
+import java.util.Comparator;
+
+/**
+ * An extension of the heap priority queue 
+ * entries can be randomly removed keys and values can be adapted
+ * 
+ * @author Lau Sandt
+ * https://github.com/lausandt/PriorityQueue
+ * 
+ */
+public class HeapAdaptablePriorityQueue<K,V> extends HeapPriorityQueue<K,V> implements AdaptablePriorityQueue<K,V> {
+	
+	//-------- nested AdaptablePQEntry class --------
+	/** Extension of PQEntry to inlude location information */
+	protected static class AdaptablePQEntry<K,V> extends PQEntry<K,V> {
+		
+		// instance variables
+		private int index;    						// entry's current index in the heap
+
+		// constructor 
+		public AdaptablePQEntry(K key, V value, int index) {
+			super(key, value);						// sets key and value using the super constructor
+			this.index = index;						// set the index field
+		}
+		
+		public int getIndex() { return index; }
+		public void setIndex(int index ) { this.index = index; }	
+	}//-------- end nested AdaptablePQEntry class ----
+	
+	
+	// constructors 
+	
+	/** creates an adaptable priority queue using the natural ordering of keys */
+	public HeapAdaptablePriorityQueue() { super(); }
+	
+	/** creates an adaptable priority queue with given comparator */
+	public HeapAdaptablePriorityQueue(Comparator<K> comp) { super(comp); }
+	
+	// protected utilities 
+	
+	/** validates an entry to ensure it is location aware */
+	protected AdaptablePQEntry<K,V> validate(Entry<K,V> entry) throws IllegalArgumentException { 
+		if (!(entry instanceof AdaptablePQEntry)) throw new IllegalArgumentException("invalid entry");	
+		AdaptablePQEntry<K,V> locator = (AdaptablePQEntry<K, V>) entry;
+		int j = locator.getIndex();		// should have an index otherwise it would have been caught straight away
+		if (j>=heap.size() || heap.get(j) != locator) // two cases j is to large to be in the heap or locator is not equal to the object in the heap
+			throw new IllegalArgumentException("invalid entry"); 
+		return locator;
+	}
+	
+	/** Exchanges the entries at indicies i and j */
+	protected void swap(int i, int j) {
+		super.swap(i, j); 										// performs the actual swap 
+		((AdaptablePQEntry<K, V>) heap.get(i)).setIndex(i);		// set the index of the entry to it's current location in the heap
+		((AdaptablePQEntry<K, V>) heap.get(j)).setIndex(j);     // dito
+	}
+	
+	/** restores the heap order property by moving the entry at index j up or down as is necessary */
+	protected void bubble(int j) {
+		if (j > 0 && compare(heap.get(j), heap.get(parent(j)) ) < 0) upheap(j); // key value of the child is smaller than that of the parent
+		else downheap(j);
+	}
+	
+	public Entry<K,V> insert(K key, V value) throws IllegalArgumentException {
+		checkKey(key);
+		Entry<K,V> latest = new AdaptablePQEntry<>(key, value, heap.size());	// create new entry
+		heap.add(latest);														// add the entry at the last position of the heap
+		upheap(heap.size()-1);													// run upheap to restore order
+		return latest;
+	}
+
+	/** Removes entry from the priority queue */
+	public void remove(Entry<K, V> entry) throws IllegalArgumentException {
+		AdaptablePQEntry<K,V> locator = validate(entry);
+		int j = locator.getIndex();
+		if (j == heap.size()-1) heap.remove(j);
+		else {
+			swap(j, heap.size()-1);
+			heap.remove(heap.size() - 1);
+			bubble(j);
+		}
+	}
+
+	/** Replaces the key of existing entry e, reestablishes order. */
+	public void replaceKey(Entry<K,V> entry, K key) throws IllegalArgumentException {
+		AdaptablePQEntry<K,V> locator = validate(entry);
+		checkKey(key);										// might throw an error
+		locator.setKey(key);								// method inherited from PQEntry
+		bubble(locator.getIndex());                         // restore the order property of the heap 
+		
+	}
+
+	@Override
+	public void replaceValue(Entry<K,V> entry, V value) throws IllegalArgumentException {
+		AdaptablePQEntry<K,V> locator = validate(entry);
+		locator.setValue(value);
+	}
+
+}
