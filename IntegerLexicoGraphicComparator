@@ -1,0 +1,25 @@
+package heaps_priority_queues;
+
+import java.util.Comparator;
+
+/**
+ * A alternative comparator for Integers (and int thanks to automatic (un)boxing)
+ * @author Lau Sandt
+ *
+ */
+
+public class IntegerLexicoGraphicComparator implements Comparator<Integer> {
+	public int compare(Integer arg0, Integer arg1) {
+		String sA = arg0.toString();
+		String sB = arg1.toString();
+		return sA.compareTo(sB);
+	}
+	
+	public static void main(String[] args) {
+		Comparator<Integer> comp = new IntegerLexicoGraphicComparator();
+		int i = 4;
+		int j = 12;
+		if (comp.compare(i, j) > 0) System.out.println( i + " is groter dan " + j + " volgens deze comparator" );
+	}
+
+}
