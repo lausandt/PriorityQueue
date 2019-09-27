@@ -1,0 +1,26 @@
+Adaptable Priority Queue ADT
+
+an element and its priority are modeled as a key value composite known as an entry Entry<K,V>
+
+insert(k, v):		Creates an entry with key k and value v in the priority queue (pq)
+
+min():				Returns but does not remove a priority queue entry (k,v) having a minimal key. 
+					returns null if the pq is empty
+
+removeMin():		Removes and returns an entry (k,v) having minimal key from the pq.
+					Returns null if the pq is empty
+
+remove(e): 			Removes entry e from the priority queue
+					An error occurs if parameter e is invalid.
+
+replaceKey(e,k):    Replaces the key of existing entry e, reestablishes order.
+					An error occurs if parameter e is invalid.
+
+replaceValue(e,v):	Replaces the value of existing entry e. 
+					An error occurs if parameter e is invalid.
+
+size():				Returns the number of elements in the priority queue
+
+isEmpty():			Returns a boolean value indicating if the pq is empty
+
+
