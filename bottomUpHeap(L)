@@ -1,0 +1,38 @@
+This is an algorithm that recursively builds an heap from bottum up
+All method call are calls to Java list, HeapPriorityQueue or mathematical operations
+
+Algorithm bottomUpHeap(L)
+  Input:  a list with n entries 
+  Output: a heap T that contains all n entries
+
+  if L.isEmpty() 
+    return empty heap
+  if n = 2 or n = 2^(floor(log(n))+1)-1 
+    e <- L.remove(L.first())
+    create two lists L1 en L2
+    fill L1 met with the first ceil((n-1)/2) elements of L
+    fill L2 with the rest
+    T1 <- bottomUpHeap(L1)
+    T2 <- bottomUpHeap(L2)
+    create a binary tree T with root r <- e, left tree T1, right tree T2
+    run downheap on T with r
+    return T      
+  else
+     e <- L.remove(L.first()) 
+     if n > 7
+       rem <- n - 1 - 2*floor(log(n)) 
+     else 
+       rem <- n - 1 - 2
+     diff <- ((2^(floor(log(n))) +1) - 1) - ((2^(floor(log(n)))-1)  
+     splits L in twee lijsten L1 en L2
+     if rem <=  diff/2 
+       vul L1 met floor(log(n))  + rem elementen 
+       vul L2 met de rest 
+     else 
+       vul L1 floor(log(n))  + diff/2 elementen 
+       vul L2 met de rest 2
+     T1 <- bottomUpHeap(L1)
+     T2 <- bottomUpHeap(L2)
+     Maak een binaire boom T met wortel r voor element e, linkerboom T1 en rechterboom T2
+     voer downheap bubbling uit vanaf de wortel van T
+     return T 	
