@@ -10,7 +10,7 @@ Algorithm bottomUpHeap(L)
   if n = 2 or n = 2^(floor(log(n))+1)-1 
     e <- L.remove(L.first())
     create two lists L1 en L2
-    fill L1 met with the first ceil((n-1)/2) elements of L
+    fill L1 with the first ceil((n-1)/2) elements of L
     fill L2 with the rest
     T1 <- bottomUpHeap(L1)
     T2 <- bottomUpHeap(L2)
@@ -24,15 +24,15 @@ Algorithm bottomUpHeap(L)
      else 
        rem <- n - 1 - 2
      diff <- ((2^(floor(log(n))) +1) - 1) - ((2^(floor(log(n)))-1)  
-     splits L in twee lijsten L1 en L2
+     create to list L1 and L2
      if rem <=  diff/2 
-       vul L1 met floor(log(n))  + rem elementen 
-       vul L2 met de rest 
+       fill L1 with the first (floor(log(n))  + rem) elements of L
+       fill L2 with the rest 
      else 
-       vul L1 floor(log(n))  + diff/2 elementen 
-       vul L2 met de rest 2
+       fill L1 with the first (floor(log(n))  + diff/2) elements of L 
+       fill L2 with the rest
      T1 <- bottomUpHeap(L1)
      T2 <- bottomUpHeap(L2)
-     Maak een binaire boom T met wortel r voor element e, linkerboom T1 en rechterboom T2
-     voer downheap bubbling uit vanaf de wortel van T
+     create a binary tree T with root r <- e, left tree T1, right tree T2
+     run downheap on T with r
      return T 	
